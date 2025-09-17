@@ -1,0 +1,41 @@
+let cartQuantityElement = document.getElementById('show-Quantity');
+let addToCartElement = document.getElementById('add-to-cart');
+let plus2BtnElement = document.getElementById('plus2');
+let plus3BtnElement = document.getElementById('plus3');
+let plus4BtnElement = document.getElementById('plus4');
+let plus5BtnElement = document.getElementById('plus5');
+let resetBtnElement = document.getElementById('resetBtn');
+let cartQuantity = 0;
+
+cartQuantityElement.addEventListener('click', ()=>{
+  console.log(`Show Quantity: ${cartQuantityElement.value}`);
+})
+
+
+addToCartElement.addEventListener('click', () => {
+  cartQuantity++;
+  cartQuantityElement.textContent = cartQuantity;
+})
+
+plus2BtnElement.addEventListener('click', ()=> {
+  cartQuantity +=2;
+  cartQuantityElement.textContent = cartQuantity;
+})
+
+plus3BtnElement.addEventListener('click', ()=> {
+  cartQuantity+=3;
+  cartQuantityElement.textContent = cartQuantity;
+})
+plus4BtnElement.addEventListener('click', ()=> {
+  cartQuantity+=4;
+  cartQuantityElement.textContent = cartQuantity;
+})
+plus5BtnElement.addEventListener('click', ()=> {
+  cartQuantity+=5;
+  cartQuantityElement.textContent = cartQuantity;
+})
+
+resetBtnElement.addEventListener('click', ()=> {
+  cartQuantity = 0;
+  cartQuantityElement.textContent = cartQuantity;
+})
