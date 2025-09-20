@@ -1,0 +1,129 @@
+    <html lang="en">
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Rock Paper Scissors</title>
+    </head>
+    <body>
+      <p>Rock Paper Scissors</p>
+      <button onclick = "
+      computerMove = getComputerMove();
+      playerMove ='Rock'
+      result = playGame(playerMove,computerMove);
+      saveScore(result);
+      displayResult();
+      updateMove();
+      displayAllScore();
+      ">Rock</button>
+      <button onclick = "
+      computerMove = getComputerMove();
+      playerMove ='Paper'
+      result = playGame(playerMove,computerMove);
+      saveScore(result);
+      displayResult();
+      updateMove();
+      displayAllScore();
+      ">Paper</button>
+      <button onclick ="
+      computerMove = getComputerMove();
+      playerMove ='Scissors';
+      result = playGame(playerMove,computerMove);
+      saveScore(result);
+      displayResult();
+      updateMove();
+      displayAllScore();
+      ">Scissors</button>
+      <p class = "result"></p>
+      <p class ="move"></p>
+      <p class = "scoresUpdate"></p>
+      <br>
+      <button onclick = "
+        resetAllScore();
+        displayAllScore();
+      ">Reset Score</button>
+      <script>
+        let computerMove = '';
+        let result ='';
+        let playerMove ='';
+          let scoresData = JSON.parse(localStorage.getItem('scores')) || {
+          wins: 0,
+          losses: 0,
+          ties: 0
+        };
+        function resetAllScore () {
+          scoresData.wins = 0;
+          scoresData.losses = 0;
+          scoresData.ties = 0;
+          localStorage.setItem('scores',JSON.stringify(scoresData));
+        }
+        function displayAllScore () {
+          document.querySelector('.scoresUpdate').innerHTML = `You win: ${scoresData.wins}, You lose: ${scoresData.losses}, You ties: ${scoresData.ties}`;
+        }
+        function displayResult (){
+          document.querySelector('.result').innerHTML = `${result}`;
+        }
+        function updateMove (){
+          document.querySelector('.move').innerHTML = `Your move: ${playerMove}, Computer move: ${computerMove}`;
+        }
+        function saveScore (result) {
+          if(result === 'You win') {
+            scoresData.wins++;
+          }
+          else if( result === 'You lose') {
+            scoresData.losses++;
+          }
+          else {
+            scoresData.ties++;
+          }
+          localStorage.setItem('scores',JSON.stringify(scoresData));
+        }
+        function playGame (playerMove, computerMove) {
+          if(playerMove === 'Rock') {
+            if(computerMove === 'Rock') {
+              return 'You tie';
+            }
+            else if(computerMove === 'Paper') {
+              return 'You lose';
+            }
+            else {
+              return 'You win';
+            }
+          }
+          else if(playerMove === 'Paper') {
+            if(computerMove === 'Rock') {
+              return 'You win';
+            }
+            else if(computerMove === 'Paper') {
+              return 'You tie';
+            }
+            else {
+              return 'You lose';
+            }
+          }
+          else {
+            if(computerMove === 'Rock') {
+              return 'You lose';
+            }
+            else if(computerMove === 'Paper') {
+              return 'You win';
+            }
+            else {
+              return 'You tie';
+            }
+          }
+          return result;
+        }
+        function getComputerMove() {
+              const getNumber = Math.random();
+              if (getNumber < 1/3) {
+                return 'Rock';
+              } else if (getNumber < 2/3) {
+                return 'Paper';
+              } else {
+                return 'Scissors';
+              }
+            }
+
+      </script>
+    </body>
+    </html>
