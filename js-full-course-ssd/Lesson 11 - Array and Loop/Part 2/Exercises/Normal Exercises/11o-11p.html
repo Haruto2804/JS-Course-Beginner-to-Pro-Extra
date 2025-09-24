@@ -1,0 +1,24 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>11o-11p</title>
+</head>
+<body>
+  <script>
+    let array1 = ['hello','world','search','good'];
+    let array2 = ['hello','world','haruto','good'];
+    function findSearchIndex (array) {
+      for(let i =0;i<array.length;i++) {
+        if(array[i] === 'search') {
+          console.log(i);
+          return;
+        }
+      }
+      console.log(-1);
+    }
+    findSearchIndex(array1)
+    findSearchIndex(array2)
+  </script>
+</body>
+</html>
