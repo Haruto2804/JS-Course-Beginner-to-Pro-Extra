@@ -1,0 +1,49 @@
+
+BÀI HỌC JAVASCRIPT CƠ BẢN
+
+1) setTimeout
+- Dùng để gọi 1 hàm sau một khoảng thời gian (tính bằng mili giây).
+Ví dụ:
+setTimeout(() => {
+  console.log('Chạy sau 2 giây');
+}, 2000);
+
+2) setInterval
+- Dùng để gọi 1 hàm lặp đi lặp lại sau một khoảng thời gian.
+Ví dụ:
+let count = 0;
+const id = setInterval(() => {
+  count++;
+  console.log('tick', count);
+  if (count >= 5) clearInterval(id);
+}, 500);
+
+3) Function Passing by Value
+- Trong JS, hàm là giá trị. Khi truyền hàm vào hàm khác, thực chất là truyền tham chiếu tới hàm đó.
+Ví dụ:
+function greet() { console.log('Hi'); }
+function caller(fn) { fn(); }
+caller(greet); // Hi
+
+4) Function trong Object
+- Hàm trong object gọi là method.
+Ví dụ:
+const user = {
+  name: 'An',
+  greet() { console.log('Hello', this.name); }
+};
+user.greet(); // Hello An
+
+5) forEach
+- Dùng để duyệt mảng.
+Ví dụ:
+const arr = [1,2,3];
+arr.forEach((item, index) => {
+  console.log(index, item);
+});
+
+6) Ghi File .txt (Node.js)
+const fs = require('fs');
+fs.writeFileSync('note.txt', 'Nội dung ghi vào file', 'utf8');
+
+Hoặc trong Browser tạo Blob để tải file .txt xuống.
