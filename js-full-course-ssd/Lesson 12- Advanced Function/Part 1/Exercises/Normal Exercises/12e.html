@@ -1,0 +1,26 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width='device-width', initial-scale=1.0">
+  <title>12e</title>
+</head>
+<body>
+  <button onclick = "
+    displayMessages();
+    removeMessages();
+    ">Add to cart</button>
+    <p class = "messages"></p>
+  <script>
+    
+    let messagesElement = document.querySelector('.messages');
+    function displayMessages  () {
+      messagesElement.textContent = 'Added!';
+    }
+    function removeMessages () {
+      setTimeout (function () {
+        messagesElement.textContent = '';
+      },2000)
+    }
+  </script>
+</body>
+</html>

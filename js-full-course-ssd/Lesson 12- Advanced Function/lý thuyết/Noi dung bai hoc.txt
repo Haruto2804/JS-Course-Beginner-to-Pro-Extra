@@ -1,0 +1,222 @@
+Đây là giải thích chi tiết cho 6 điểm trong bài học, kèm theo các ví dụ thực tế bằng **JavaScript**.
+
+### **1. Functions are values (Hàm là các giá trị)**
+
+Trong JavaScript (và nhiều ngôn ngữ lập trình hiện đại khác), **hàm** không chỉ là một khối lệnh; chúng là các **giá trị** (value) có thể được gán cho biến, được truyền làm đối số cho hàm khác (callback), và được trả về từ các hàm khác (higher-order function). Đây là khái niệm cốt lõi của **First-Class Functions** (Hàm hạng nhất).
+
+**Ví dụ:**
+
+```javascript
+// Gán hàm cho một biến
+const greet = function(name) {
+  return `Xin chào, ${name}!`;
+};
+
+// Sử dụng biến để gọi hàm
+console.log(greet("Minh")); // Output: Xin chào, Minh!
+
+// Truyền hàm làm đối số (Callback)
+function performAction(action, data) {
+  console.log("Đang thực hiện hành động...");
+  return action(data);
+}
+
+// Truyền hàm 'greet' vào hàm 'performAction'
+const result = performAction(greet, "Lan");
+console.log(result); // Output: Xin chào, Lan!
+```
+
+-----
+
+### **2. setTimeout(), setInterval()**
+
+Đây là các hàm toàn cục trong môi trường trình duyệt (và Node.js) được dùng để quản lý thời gian:
+
+  * **`setTimeout(callback, delay)`**: Thực thi hàm `callback` **một lần duy nhất** sau khoảng thời gian `delay` (tính bằng mili giây).
+  * **`setInterval(callback, delay)`**: Thực thi hàm `callback` **lặp đi lặp lại** sau mỗi khoảng thời gian `delay`.
+
+Cả hai hàm đều trả về một ID, dùng để dừng việc thực thi bằng `clearTimeout(id)` hoặc `clearInterval(id)`.
+
+**Ví dụ:**
+
+```javascript
+// setTimeout - Thực thi một lần sau 2 giây
+console.log("Bắt đầu chờ...");
+const timeoutId = setTimeout(() => {
+  console.log("Thông báo này xuất hiện sau 2 giây.");
+}, 2000); // 2000 ms = 2 giây
+
+// Dừng timeout trước khi nó kịp chạy (ví dụ)
+// clearTimeout(timeoutId);
+
+// setInterval - Lặp lại sau mỗi 1 giây
+let counter = 0;
+const intervalId = setInterval(() => {
+  counter++;
+  console.log(`Đếm: ${counter}`);
+
+  // Dừng lặp lại sau 5 lần
+  if (counter >= 5) {
+    clearInterval(intervalId);
+    console.log("Đã dừng lặp lại.");
+  }
+}, 1000); // 1000 ms = 1 giây
+```
+
+-----
+
+### **3. .forEach()**
+
+Phương thức **`.forEach()`** là một phương thức của **Array** (mảng) trong JavaScript. Nó dùng để lặp qua **tất cả** các phần tử trong mảng và thực thi một hàm **callback** cho mỗi phần tử.
+
+**Cú pháp:** `array.forEach(function(currentValue, index, array) { ... })`
+
+**Ví dụ:**
+
+```javascript
+const numbers = [10, 20, 30, 40];
+
+let sum = 0;
+
+numbers.forEach((number, index) => {
+  sum += number;
+  console.log(`Phần tử thứ ${index}: ${number}`);
+});
+// Output:
+// Phần tử thứ 0: 10
+// Phần tử thứ 1: 20
+// Phần tử thứ 2: 30
+// Phần tử thứ 3: 40
+
+console.log(`Tổng các phần tử: ${sum}`); // Output: 100
+```
+
+-----
+
+### **4. Arrow functions, .addEventListener()**
+
+#### **Arrow Functions (Hàm Mũi Tên)**
+
+Là cú pháp ngắn gọn hơn để viết hàm trong JavaScript, được giới thiệu trong ES6. Nó có cú pháp: `(params) => { statements }`.
+
+**Đặc điểm nổi bật:**
+
+  * **Cú pháp ngắn gọn:** Rất thích hợp cho các hàm callback đơn giản.
+  * **Không có `this` riêng:** Nó kế thừa giá trị `this` từ phạm vi cha (lexical scope), giúp giải quyết các vấn đề về ngữ cảnh `this` thường gặp.
+
+**Ví dụ:**
+
+```javascript
+// Hàm truyền thống
+const addTraditional = function(a, b) {
+  return a + b;
+};
+
+// Hàm Mũi Tên (ngắn gọn hơn)
+const addArrow = (a, b) => a + b; // Nếu chỉ có 1 biểu thức, có thể bỏ 'return' và {}
+
+console.log(addArrow(5, 3)); // Output: 8
+```
+
+#### **addEventListener()**
+
+Đây là một phương thức của các phần tử DOM (Document Object Model) trong trình duyệt, dùng để **đăng ký** một hàm **callback** (listener) để thực thi khi một **sự kiện** (event) cụ thể xảy ra (ví dụ: click chuột, di chuột, nhấn phím).
+
+**Cú pháp:** `element.addEventListener(event, handlerFunction, useCapture)`
+
+**Ví dụ (sử dụng Arrow Function làm handler):**
+
+Giả sử có một nút `<button id="myButton">Nhấn vào đây</button>`
+
+```javascript
+const button = document.getElementById('myButton');
+
+// Thêm sự kiện 'click' với Arrow Function
+button.addEventListener('click', (event) => {
+  console.log('Nút đã được nhấn!');
+  // event.target là phần tử đã kích hoạt sự kiện (ở đây là button)
+  event.target.textContent = 'Đã nhấn!';
+});
+```
+
+-----
+
+### **5. .filter(), .map()**
+
+Đây là hai phương thức cực kỳ quan trọng của **Array** (mảng) để làm việc với dữ liệu theo phong cách lập trình hàm (Functional Programming). Cả hai đều **không làm thay đổi** mảng gốc, mà trả về một **mảng mới**.
+
+#### **`.map()`**
+
+Tạo một **mảng mới** bằng cách áp dụng một hàm **callback** cho **mỗi** phần tử của mảng gốc. Nó dùng để **biến đổi** các phần tử.
+
+**Ví dụ:**
+
+```javascript
+const prices = [10, 50, 100];
+
+// Tạo mảng mới với giá trị đã giảm 10%
+const discountedPrices = prices.map(price => price * 0.9);
+
+console.log(prices);            // Output: [10, 50, 100] (Mảng gốc không đổi)
+console.log(discountedPrices);  // Output: [9, 45, 90]
+```
+
+#### **`.filter()`**
+
+Tạo một **mảng mới** chỉ chứa các phần tử của mảng gốc mà hàm **callback** (hàm kiểm tra) trả về giá trị **`true`**. Nó dùng để **lọc** các phần tử.
+
+**Ví dụ:**
+
+```javascript
+const students = [
+  { name: 'An', score: 85 },
+  { name: 'Bình', score: 92 },
+  { name: 'Cường', score: 78 }
+];
+
+// Lọc ra những học sinh có điểm >= 90
+const highScorers = students.filter(student => student.score >= 90);
+
+console.log(highScorers);
+/*
+Output:
+[
+  { name: 'Bình', score: 92 }
+]
+*/
+```
+
+-----
+
+### **6. Closure (Bao đóng)**
+
+**Closure** là một trong những khái niệm quan trọng nhất trong JavaScript. Về cơ bản, một **closure** là một hàm (inner function) mà cùng với **môi trường từ vựng** (lexical environment) mà nó được khai báo.
+
+Điều này có nghĩa là, một hàm con có thể **ghi nhớ và truy cập** các biến trong phạm vi của hàm cha (outer function) ngay cả **sau khi** hàm cha đã thực thi xong.
+
+**Giải thích chi tiết:**
+
+Khi hàm cha `createCounter()` được gọi, nó tạo ra biến cục bộ `count = 0`. Nó sau đó trả về hàm con **anonymous function** (hàm vô danh). Khi hàm con này được trả về, nó "mang theo" sự tham chiếu đến biến `count` của hàm cha. Mỗi khi bạn gọi `counter()`, nó truy cập và tăng giá trị của `count` mà nó đã "ghi nhớ".
+
+**Ví dụ:**
+
+```javascript
+function createCounter() {
+  let count = 0; // Biến cục bộ trong phạm vi của createCounter
+
+  // Hàm được trả về này tạo thành một Closure
+  return function() {
+    count++; // Truy cập và thay đổi biến 'count' từ phạm vi cha
+    return count;
+  };
+}
+
+const counter1 = createCounter(); // counter1 là một closure mới
+const counter2 = createCounter(); // counter2 là một closure độc lập
+
+console.log(counter1()); // Output: 1
+console.log(counter1()); // Output: 2 (counter1 vẫn ghi nhớ giá trị count cũ)
+
+console.log(counter2()); // Output: 1 (Bắt đầu đếm lại, độc lập với counter1)
+console.log(counter1()); // Output: 3
+```

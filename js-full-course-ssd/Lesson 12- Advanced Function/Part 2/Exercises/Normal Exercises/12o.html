@@ -1,0 +1,28 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>12o</title>
+</head>
+<body>
+  <script>
+      const removeEgg = (foods)=> {
+      let newFoodsWithoutEggs = [];
+      newFoodsWithoutEggs = foods.filter(value => {
+        let eggsRemove = 0;
+        if(value === 'egg'  && eggsRemove <=2) {
+          eggsRemove++;
+          return false;
+        }
+        else {
+          return true;
+        }
+      })
+      return newFoodsWithoutEggs;
+    }
+    const foods = ['egg','apple','egg','egg','ham'];
+  
+    console.log(removeEgg(foods));
+  </script>
+</body>
+</html>
