@@ -1,4 +1,24 @@
-
+import { formatCurrency } from '../scripts/utils/money.js'
+class Product {
+  id;
+  image;
+  name;
+  rating;
+  PriceCents;
+  constructor (productDetails) {
+    this.id = productDetails.id;
+    this.image = productDetails.image;
+    this.name = productDetails.name;
+    this.rating=productDetails.rating;
+    this.priceCents=productDetails.priceCents;
+  }
+  getStartsUrl () {
+    return `/images/ratings/rating-${this.rating.stars * 10}.png`;
+  }
+  getPrice () {
+    return `$${formatCurrency(this.priceCents)}`
+  }
+}
 export const products = [
   {
     id: "e43638ce-6aa0-4b85-b27f-e1d07eb678c6",
@@ -688,22 +708,9 @@ export const products = [
     },
     priceCents: 1900000,
   }
-];
-// const newProducts = [];
-// for( let i = 0;i< 9999;i++) {
-//   newProducts.push(
-//     {
-//     id: `bc2847e9-5323-403f-b7cf-57fde044a95+${i}`,
-//     image: 'images/products-from-haruto/figure-mikasa.jpg',
-//     name: 'Mikasa Ackerman 1/8 - Attack on Titan',
-//     rating: {
-//       stars: 5,
-//       count: 1239
-//     },
-//     priceCents: 35999,
-//   })
-// }
-// products.push(...newProducts);
+].map((productDetails)=> {
+  return new Product(productDetails);
+;})
 export function getProduct(productId) {
   let matchingItem;
   products.forEach((product)=> {
@@ -715,3 +722,4 @@ export function getProduct(productId) {
     return matchingItem;
   }
 }
+
