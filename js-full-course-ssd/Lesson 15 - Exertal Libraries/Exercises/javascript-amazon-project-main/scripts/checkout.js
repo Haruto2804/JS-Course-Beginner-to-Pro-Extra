@@ -1,8 +1,8 @@
 import {cart,removeFromCart,updateCartQuantity,totalCartQuantity,saveToLocalStorage} from '../data/cart.js';
 import {products} from '../data/products.js';
 import * as utils from './utils/money.js'
-import {deliveryOptions} from '../data/deliveryOptionId.js'
-import dayjs from 'https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js'
+
+
 createHTML();
 function createHTML () {
   let html = '';
@@ -51,11 +51,48 @@ function createHTML () {
               </div>
 
               <div class="delivery-options">
-              <div class="delivery-options-title">
+                <div class="delivery-options-title">
                   Choose a delivery option:
-              </div>
-                ${renderDeliveryHTML(matchingProduct,cartItem)}
-              </div>
+                </div>
+                <div class="delivery-option">
+                  <input type="radio" checked
+                    class="delivery-option-input"
+                    name="delivery-option-${matchingProduct.id}">
+                  <div>
+                    <div class="delivery-option-date">
+                      Tuesday, June 21
+                    </div>
+                    <div class="delivery-option-price">
+                      FREE Shipping
+                    </div>
+                  </div>
+                </div>
+                <div class="delivery-option">
+                  <input type="radio"
+                    class="delivery-option-input"
+                    name="delivery-option-${matchingProduct.id}">
+                  <div>
+                    <div class="delivery-option-date">
+                      Wednesday, June 15
+                    </div>
+                    <div class="delivery-option-price">
+                      $4.99 - Shipping
+                    </div>
+                  </div>
+                </div>
+                <div class="delivery-option">
+                  <input type="radio"
+                    class="delivery-option-input"
+                    name="delivery-option-${matchingProduct.id}">
+                  <div>
+                    <div class="delivery-option-date">
+                      Monday, June 13
+                    </div>
+                    <div class="delivery-option-price">
+                      $9.99 - Shipping
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -66,36 +103,17 @@ document.querySelector('.order-summary')
   .innerHTML = html;
 }
 
-function renderDeliveryHTML (matchingProduct,cartItem) {
-  let deliveryHTML = '';
-  let today = dayjs();
-  deliveryOptions.forEach((deliveryOption)=> {
-  const deliveryDays = deliveryOption.deliveryDays;
-  const deliveryDate = today.add(deliveryDays,'days').format('dddd MMMM D');
-  const deliveryCents = utils.formatCurrency(deliveryOption.priceCents);
-    deliveryHTML += `
-              
-                <div class="delivery-option">
-                  <input type="radio" checked
-                    class="delivery-option-input"
-                    name="delivery-option-${matchingProduct.id}"
-                    data-product-id = "${matchingProduct.id}">
-                  <div>
-                    <div class="delivery-option-date">
-                      ${deliveryDate}
-                    </div>
-                    <div class="delivery-option-price">
-                      ${deliveryCents == 0 ?  'FREE Shipping' : `$${deliveryCents} - Shipping`}
-                    </div>
-                  </div>
-                </div>
-  `;
+
+const deleteBtnElement = document.querySelectorAll('.js-delete-product');
+deleteBtnElement.forEach((button)=> {
+  button.addEventListener('click',()=> {
+    const productID = button.dataset.productId;
+    removeFromCart(productID);
+    const container = document.querySelector(`.js-cart-item-container-${productID}`);
+    container.remove();
+    displayCheckOutItem();
   })
-  return deliveryHTML;
-}
-
-
-
+})
 
 displayCheckOutItem();
 function displayCheckOutItem () {
@@ -106,6 +124,56 @@ function displayCheckOutItem () {
 }
 }
 
+const saveBtnElement = document.querySelectorAll('.save-quantity-link');
+saveBtnElement.forEach((button)=> {
+  button.addEventListener('click',()=> {
+      const productId = button.dataset.productId;
+      let matchingProduct;
+      cart.forEach((cartItem)=> {
+        if(productId === cartItem.productId) {
+          matchingProduct = cartItem;
+        }
+      })
+      if(matchingProduct) {
+        const quantityInputElement = document.querySelector(`.quantity-input-${productId}`);
+        const quantityNum = quantityInputElement.value;
+        if(quantityNum>=1 && quantityNum <=99) {
+          matchingProduct.quantity = Number(quantityInputElement.value);
+          document.querySelector(`.quantity-label-${matchingProduct.productId}`).textContent = `${matchingProduct.quantity}`;
+          updateItemCheckOut();
+          updateTotalItem(matchingProduct.productId);
+        }else {
+          alert('Invalid Quantity! Please try again');
+          quantityInputElement.value = '';
+        }
+        
+      }
+
+      // Xử lí xuất hiện của các nút
+      // false: ẩn đi, true: hiện ra
+      toggleHidden(button,false);
+      toggleHidden(document.querySelector(`.quantity-input-${productId}`),false);
+      toggleHidden(document.querySelector(`.quantity-label-${productId}`),true);
+      toggleHidden(document.querySelector(`.updateBtn-${productId}`),true);
+
+      saveToLocalStorage();
+  })
+
+})
+const updateBtnElement = document.querySelectorAll('.updateBtn');
+updateBtnElement.forEach((button)=> {
+  button.addEventListener('click',()=> {
+    console.log('Dang trong nut')
+    const productId = button.dataset.productId;
+    const quantityInputElement = document.querySelector(`.quantity-input-${productId}`);
+    // false: ẩn đi, true: hiện ra
+    toggleHidden(button,false);
+    toggleHidden(quantityInputElement,true);
+    toggleHidden(document.querySelector(`.save-quantity-link-${productId}`),true)
+    toggleHidden(document.querySelector(`.quantity-label-${productId}`),false);
+  })
+
+})
 
 
 function toggleHidden (element,show) {
@@ -135,87 +203,11 @@ function updateTotalItem (productId) {
   let totalPriceOfItemByCents = 0;
   products.forEach((product)=> {
     if(matchingItem.productId === product.id) {
+      console.log('asds')
       totalPriceOfItemByCents = (product.priceCents *matchingItem.quantity);
       document.querySelector(`.product-price-${matchingItem.productId}`)
         .innerHTML = `$${utils.formatCurrency(totalPriceOfItemByCents)}`;
+              console.log('Tim thay san pham trong gio hang')
     }
   })
-}
-
-document.querySelector('.order-summary')
-  .addEventListener('click',(e)=> {
-    if(e.target.matches('.js-delete-product')) {
-      console.log('Ban dang an vao nut xóa')
-      handleDeleteBtn(e);
-    }
-    if(e.target.matches('.updateBtn')) {
-            console.log('Ban dang an vao nut update')
-      handleUpdateBtn(e);
-    }
-    if(e.target.matches('.save-quantity-link')) {
-      console.log('Ban dang an vao nut save')
-      handleSaveBtn(e);
-    }
-    if(e.target.matches('.delivery-option-input')) {
-      handleDeliveryOptionId(e);
-    }
-  })
-
-
-
-
-
-
-function handleDeleteBtn (e) {
-    const productID = e.target.dataset.productId;
-    removeFromCart(productID);
-    const container = document.querySelector(`.js-cart-item-container-${productID}`);
-    container.remove();
-    displayCheckOutItem();
-}
-function handleUpdateBtn (e) {
-    const productId = e.target.dataset.productId;
-    const quantityInputElement = document.querySelector(`.quantity-input-${productId}`);
-    // false: ẩn đi, true: hiện ra
-    toggleHidden(e.target,false);
-    toggleHidden(quantityInputElement,true);
-    toggleHidden(document.querySelector(`.save-quantity-link-${productId}`),true)
-    toggleHidden(document.querySelector(`.quantity-label-${productId}`),false);
-
-}
-function handleSaveBtn (e) {
-      const productId = e.target.dataset.productId;
-      let matchingProduct;
-      cart.forEach((cartItem)=> {
-        if(productId === cartItem.productId) {
-          matchingProduct = cartItem;
-        }
-      })
-      if(matchingProduct) {
-        const quantityInputElement = document.querySelector(`.quantity-input-${productId}`);
-        const quantityNum = quantityInputElement.value;
-        if(quantityNum>=1 && quantityNum <=99) {
-          matchingProduct.quantity = Number(quantityInputElement.value);
-          document.querySelector(`.quantity-label-${matchingProduct.productId}`).textContent = `${matchingProduct.quantity}`;
-          updateItemCheckOut();
-          updateTotalItem(matchingProduct.productId);
-        }else {
-          alert('Invalid Quantity! Please try again');
-          quantityInputElement.value = '';
-        }
-        
-      }
-
-      // Xử lí xuất hiện của các nút
-      // false: ẩn đi, true: hiện ra
-      toggleHidden(e.target,false);
-      toggleHidden(document.querySelector(`.quantity-input-${productId}`),false);
-      toggleHidden(document.querySelector(`.quantity-label-${productId}`),true);
-      toggleHidden(document.querySelector(`.updateBtn-${productId}`),true);
-
-      saveToLocalStorage();
-}
-function handleDeliveryOptionId (e) {
-  const productId = e.target.dataset.productId;
-  console.log(productId);
 }
