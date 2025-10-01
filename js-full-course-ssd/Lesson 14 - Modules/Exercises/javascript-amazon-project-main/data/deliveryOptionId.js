@@ -15,10 +15,10 @@ export const deliveryOptions = [
     priceCents: 999
   }
 ]
-export function FindDeliveryOption (id) {
+export function FindDeliveryOption (DeliveryOptionId) {
   let matchingDelivery;
   deliveryOptions.forEach((option)=> {
-      if(id === option.id) {
+      if(DeliveryOptionId === option.id) {
       matchingDelivery = option;
     }
   }) 

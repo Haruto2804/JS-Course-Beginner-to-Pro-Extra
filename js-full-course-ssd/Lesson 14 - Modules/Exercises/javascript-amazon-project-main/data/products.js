@@ -704,3 +704,14 @@ export const products = [
 //   })
 // }
 // products.push(...newProducts);
+export function getProduct(productId) {
+  let matchingItem;
+  products.forEach((product)=> {
+    if(productId === product.id) {
+      matchingItem = product;
+    }
+  }) 
+  if(matchingItem) {
+    return matchingItem;
+  }
+}

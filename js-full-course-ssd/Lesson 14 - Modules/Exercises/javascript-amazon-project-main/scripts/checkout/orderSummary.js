@@ -3,6 +3,7 @@ import {products} from '../../data/products.js';
 import * as utils from '../utils/money.js'
 import {deliveryOptions, FindDeliveryOption} from '../../data/deliveryOptionId.js'
 import dayjs from 'https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js'
+import {renderPaymentSummary} from './paymentSummary.js'
 renderOrderSummary();
 export function renderOrderSummary () {
   let html = '';
@@ -17,7 +18,7 @@ export function renderOrderSummary () {
   const deliveryOption = FindDeliveryOption(cartItem.deliveryOptionId);
   const deliveryDays = deliveryOption.deliveryDays;
   const today = dayjs();
-  const deliveryDate = today.add(deliveryDays,'days').format('dddd MMMM D');
+  const deliveryDate = getCaculateDeliveryDay(deliveryOption);
   html += `
         <div class="cart-item-container js-cart-item-container-${matchingProduct.id}">
             <div class="delivery-date">
@@ -74,7 +75,7 @@ function renderDeliveryHTML (matchingProduct,cartItem) {
   let today = dayjs();
   deliveryOptions.forEach((deliveryOption)=> {
   const deliveryDays = deliveryOption.deliveryDays;
-  const deliveryDate = today.add(deliveryDays,'days').format('dddd MMMM D');
+  const deliveryDate = getCaculateDeliveryDay(deliveryOption);
   const deliveryCents = utils.formatCurrency(deliveryOption.priceCents);
   const isChecked = cartItem.deliveryOptionId === deliveryOption.id ? 'checked' : '';
   deliveryHTML += `
@@ -177,15 +178,18 @@ function handleDeleteBtn (e) {
     const container = document.querySelector(`.js-cart-item-container-${productID}`);
     container.remove();
     displayCheckOutItem();
+    renderPaymentSummary();
 }
 function handleUpdateBtn (e) {
     const productId = e.target.dataset.productId;
     const quantityInputElement = document.querySelector(`.quantity-input-${productId}`);
     // false: ẩn đi, true: hiện ra
+    renderPaymentSummary();
     toggleHidden(e.target,false);
     toggleHidden(quantityInputElement,true);
     toggleHidden(document.querySelector(`.save-quantity-link-${productId}`),true)
     toggleHidden(document.querySelector(`.quantity-label-${productId}`),false);
+    
 
 }
 function handleSaveBtn (e) {
@@ -199,11 +203,12 @@ function handleSaveBtn (e) {
       if(matchingProduct) {
         const quantityInputElement = document.querySelector(`.quantity-input-${productId}`);
         const quantityNum = quantityInputElement.value;
-        if(quantityNum>=1 && quantityNum <=99) {
+        if(quantityNum>=1 && quantityNum <=999) {
           matchingProduct.quantity = Number(quantityInputElement.value);
           document.querySelector(`.quantity-label-${matchingProduct.productId}`).textContent = `${matchingProduct.quantity}`;
           updateItemCheckOut();
           updateTotalItem(matchingProduct.productId);
+          renderPaymentSummary();
         }else {
           alert('Invalid Quantity! Please try again');
           quantityInputElement.value = '';
@@ -232,6 +237,27 @@ function handleDeliveryOptionId (e) {
   if(matchingProduct) {
     matchingProduct.deliveryOptionId = newDeliveryOptionId;
     saveToLocalStorage();
+    renderPaymentSummary();
     renderOrderSummary();
   }
+}
+
+// HÀM XỬ LÍ NGÀY KHÔNG GIAO THỨ 7 CHỦ NHẬT
+function getCaculateDeliveryDay (deliveryOption) {
+  const today = dayjs();
+  const waitDays = skipWeekends(deliveryOption.deliveryDays);
+  const deliveryDate = today.add(waitDays,'days');
+  return deliveryDate.format('dddd MMMM D');
+  }
+
+function skipWeekends (deliveryDays) {
+  let waitDays =  deliveryDays//là số ngày mà khách phải chờ để nhận được hàng // 3
+  const today = dayjs();
+  for(let i = 1;i<=waitDays;i++) {
+    const nextDay = today.add(i,'days').format('dddd');
+    if(nextDay === 'Saturday' || nextDay === 'Sunday') {
+      waitDays++;
+    }
+  }
+  return waitDays;
 }
