@@ -1,5 +1,5 @@
 import * as utils from './utils/money.js'
-import {addToCart, cart,displayAddMessage,updateCartQuantity} from '../data/cart.js'
+import {addtoCart, cart,displayAddMessage,updateCartQuantity} from '../data/cart.js'
 import {products} from '../data/products.js'
 let productsHTML ='';
 updateCartQuantity();
@@ -60,6 +60,6 @@ document.querySelector('.js-products-grid').
 //GRID PRODUCT=====================================
   updateCartQuantity();
   //CART ================================
-  addToCart();
+  addtoCart();
   //CART ================================
   

@@ -1,8 +1,6 @@
 import * as utils from './utils/money.js'
-import {addToCart, cart,displayAddMessage,updateCartQuantity} from '../data/cart.js'
-import {products} from '../data/products.js'
+import {cart,totalCartQuantity} from '../data/cart.js'
 let productsHTML ='';
-updateCartQuantity();
 products.forEach((product)=> {
   productsHTML += `
         <div class="product-container">
@@ -22,12 +20,13 @@ products.forEach((product)=> {
                 ${product.rating.count}
               </div>
             </div>
+
             <div class="product-price">
-              $${utils.formatCurrency(product.priceCents)}
+              $${utils.formatCurrency(product.priceCents)} 
             </div>
 
             <div class="product-quantity-container">
-              <select class = "js-select-input-${product.id}">
+              <select class = "js-select-input">
                 <option selected value="1">1</option>
                 <option value="2">2</option>
                 <option value="3">3</option>
@@ -43,7 +42,7 @@ products.forEach((product)=> {
 
             <div class="product-spacer"></div>
 
-            <div class="added-to-cart added-to-cart-js added-to-cart-js-${product.id}">
+            <div class="added-to-cart">
               <img src="images/icons/checkmark.png">
               Added
             </div>
@@ -55,11 +54,37 @@ products.forEach((product)=> {
           </div>
   `
 })
+//GRID PRODUCT=====================================
 document.querySelector('.js-products-grid').
     innerHTML = productsHTML;
 //GRID PRODUCT=====================================
-  updateCartQuantity();
+
+
+
   //CART ================================
-  addToCart();
+  document.querySelectorAll('.js-add-to-cart')
+  .forEach((button)=> {
+  button. addEventListener('click',()=> {
+  const productID = button.dataset.productId;
+  let matchingItem;
+  const selectorElement = document.querySelector('js-select-input')
+  cart.forEach((item)=> {
+    if(productID === item.productID) {
+          matchingItem=item;
+    }
+  })
+    if(matchingItem) {
+      matchingItem.quantity+=1;
+      
+    }else {
+      cart.push({
+      productID: productID,
+      quantity: 1
+      })
+    }
+    document.querySelector('.js-cart-quantity')
+      .innerHTML = `5`;
+})
+})
+
   //CART ================================
-  
