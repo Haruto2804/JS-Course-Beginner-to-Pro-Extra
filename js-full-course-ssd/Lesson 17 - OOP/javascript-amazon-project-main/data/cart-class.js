@@ -2,13 +2,13 @@ import { products } from "./products.js";
 import { deliveryOptions } from "./deliveryOptionId.js";
 class Cart {
   cartItems;
-  localStorageKey;
+  #localStorageKey;
   constructor (localStorageKey) {
-    this.localStorageKey = localStorageKey;
-    this.loadFromLocalStorage();
+    this.#localStorageKey = localStorageKey;
+    this.#loadFromLocalStorage();
   }
-  loadFromLocalStorage() {
-  this.cartItems = JSON.parse(localStorage.getItem(this.localStorageKey)) || [];
+  #loadFromLocalStorage() {
+  this.cartItems = JSON.parse(localStorage.getItem(this.#localStorageKey)) || [];
   };
   saveToLocalStorage () {
     localStorage.setItem(this.localStorageKey,JSON.stringify(this.cartItems));
@@ -116,14 +116,12 @@ const cart = new Cart ('cart-oop');
 const businessCart = new Cart ('cart-bussines');
 const cartCompany = new Cart ('cart-company');
 
-// cart.addToCart1('e43638ce-6aa0-4b85-b27f-e1d07eb678c6');
-// businessCart.addToCart1('15b6fc6f-327a-4ec4-896f-486349e85a3d15b6fc6f-327a-4ec4-896f-486349e85a3d');
+
 console.log(cart);
 console.log(businessCart);
 console.log(cartCompany);
 
 console.log(businessCart instanceof Cart)
-
 
 
 
