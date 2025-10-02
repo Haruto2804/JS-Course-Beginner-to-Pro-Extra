@@ -160,6 +160,7 @@ document.querySelector('.order-summary')
     if(e.target.matches('.save-quantity-link')) {
       console.log('Ban dang an vao nut save')
       handleSaveBtn(e);
+      cart.updateCartQuantity();
     }
     if(e.target.matches('.delivery-option-input')) {
       handleDeliveryOptionId(e);

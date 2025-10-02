@@ -66,13 +66,10 @@ class Cart {
   };
   
   updateCartQuantity () {
-      let cartQuantity = 0;
-      this.cartItems.forEach((item)=> {
-      cartQuantity += item.quantity;;
-    })
-      document.querySelector('.js-cart-quantity')
-        .innerHTML = `${cartQuantity}`
-    return cartQuantity;
+    const checkOutItemTitle = document.querySelector('.js-cart-quantity');
+      if(checkOutItemTitle) { 
+        checkOutItemTitle.innerHTML = `${this.totalCartQuantity()}`
+      }
   };
 
   removeFromCart(productId) {
