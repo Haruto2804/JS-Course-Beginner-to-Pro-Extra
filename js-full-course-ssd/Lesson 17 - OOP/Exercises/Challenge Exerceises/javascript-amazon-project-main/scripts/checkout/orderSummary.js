@@ -1,13 +1,13 @@
-import {cart,removeFromCart,updateCartQuantity,totalCartQuantity,saveToLocalStorage} from '../../data/cart.js';
 import {products} from '../../data/products.js';
 import * as utils from '../utils/money.js'
 import {deliveryOptions, FindDeliveryOption} from '../../data/deliveryOptionId.js'
 import dayjs from 'https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js'
 import {renderPaymentSummary} from './paymentSummary.js'
+import {cart} from '../../data/cart-class.js';
 renderOrderSummary();
 export function renderOrderSummary () {
   let html = '';
-  cart.forEach((cartItem)=> {
+  cart.cartItems.forEach((cartItem)=> {
   const productId = cartItem.productId;
   let matchingProduct;
   products.forEach((product)=> {
@@ -107,7 +107,7 @@ function displayCheckOutItem () {
   const checkOutItemElement = document.querySelector('.js-checkout-item');
   if(checkOutItemElement) {
   let cartQuantity;
-  checkOutItemElement.textContent = totalCartQuantity();
+  checkOutItemElement.textContent = cart.totalCartQuantity();
 }
 }
 
@@ -125,12 +125,12 @@ function toggleHidden (element,show) {
 }
 function updateItemCheckOut () {
   document.querySelector('.js-checkout-item')
-    .textContent = totalCartQuantity();
+    .textContent = cart.totalCartQuantity();
 }
 function updateTotalItem (productId) {
   let matchingItem;
   //Kiếm sản phẩm trong giỏ hàng
-  cart.forEach((cartItem)=> {
+  cart.cartItems.forEach((cartItem)=> {
     if(productId === cartItem.productId) {
       matchingItem = cartItem;
     }
@@ -173,7 +173,7 @@ document.querySelector('.order-summary')
 
 function handleDeleteBtn (e) {
     const productID = e.target.dataset.productId;
-    removeFromCart(productID);
+    cart.removeFromCart(productID);
     const container = document.querySelector(`.js-cart-item-container-${productID}`);
     container.remove();
     displayCheckOutItem();
@@ -194,7 +194,7 @@ function handleUpdateBtn (e) {
 function handleSaveBtn (e) {
       const productId = e.target.dataset.productId;
       let matchingProduct;
-      cart.forEach((cartItem)=> {
+      cart.cartItems.forEach((cartItem)=> {
         if(productId === cartItem.productId) {
           matchingProduct = cartItem;
         }
@@ -222,12 +222,12 @@ function handleSaveBtn (e) {
       toggleHidden(document.querySelector(`.quantity-label-${productId}`),true);
       toggleHidden(document.querySelector(`.updateBtn-${productId}`),true);
 
-      saveToLocalStorage();
+      cart.saveToLocalStorage();
 }
 function handleDeliveryOptionId (e) {
   const productId = e.target.dataset.productId;
   let matchingProduct;
-  cart.forEach((cartItem)=> {
+  cart.cartItems.forEach((cartItem)=> {
     if(cartItem.productId === productId) {
       matchingProduct = cartItem;
     }
@@ -235,7 +235,7 @@ function handleDeliveryOptionId (e) {
   const newDeliveryOptionId = e.target.dataset.deliveryOptionId;
   if(matchingProduct) {
     matchingProduct.deliveryOptionId = newDeliveryOptionId;
-    saveToLocalStorage();
+    cart.saveToLocalStorage();
     renderPaymentSummary();
     renderOrderSummary();
   }

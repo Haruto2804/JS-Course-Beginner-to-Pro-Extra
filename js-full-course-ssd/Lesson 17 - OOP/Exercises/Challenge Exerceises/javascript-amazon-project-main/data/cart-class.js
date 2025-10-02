@@ -11,7 +11,7 @@ class Cart {
   this.cartItems = JSON.parse(localStorage.getItem(this.#localStorageKey)) || [];
   };
   saveToLocalStorage () {
-    localStorage.setItem(this.localStorageKey,JSON.stringify(this.cartItems));
+    localStorage.setItem(this.#localStorageKey,JSON.stringify(this.cartItems));
   };
   addToCart (productId) {
     const addToCartElement = document.querySelectorAll('.js-add-to-cart')
@@ -96,7 +96,6 @@ class Cart {
 
   displayAddMessage (productId) {
   const addedMessage = document.querySelector(`.added-to-cart-js-${productId}`);
-  console.log(addedMessage)
   let addedMessageTimeoutId;
   addedMessage.classList.add('added-to-cart-js-visible');
   const timeOutId = setTimeout(()=> {
@@ -112,17 +111,7 @@ class Cart {
 
 
 
-const cart = new Cart ('cart-oop');
-const businessCart = new Cart ('cart-bussines');
-const cartCompany = new Cart ('cart-company');
-
-
-console.log(cart);
-console.log(businessCart);
-console.log(cartCompany);
-
-console.log(businessCart instanceof Cart)
-
+export const cart = new Cart ('cart-oop');
 
 
 

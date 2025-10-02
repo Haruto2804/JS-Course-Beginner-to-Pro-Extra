@@ -1,8 +1,10 @@
-import * as utils from './utils/money.js'
-import {addtoCart, cart,displayAddMessage,updateCartQuantity} from '../data/cart.js'
+import * as utils from '../scripts/utils/money.js'
+import '../data/cart-class.js'
 import {products} from '../data/products.js'
+import '../data/cart-class.js'
+import {cart} from '../data/cart-class.js'
 let productsHTML ='';
-updateCartQuantity();
+cart.updateCartQuantity();
 products.forEach((product)=> {
   productsHTML += `
         <div class="product-container">
@@ -58,8 +60,9 @@ products.forEach((product)=> {
 document.querySelector('.js-products-grid').
     innerHTML = productsHTML;
 //GRID PRODUCT=====================================
-  updateCartQuantity();
+  cart.updateCartQuantity();
   //CART ================================
-  addtoCart();
+  cart.addToCart();
   //CART ================================
+
   

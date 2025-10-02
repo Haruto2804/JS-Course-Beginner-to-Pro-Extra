@@ -821,5 +821,4 @@ export function getProduct(productId) {
     return matchingItem;
   }
 }
-console.log(products)
 
