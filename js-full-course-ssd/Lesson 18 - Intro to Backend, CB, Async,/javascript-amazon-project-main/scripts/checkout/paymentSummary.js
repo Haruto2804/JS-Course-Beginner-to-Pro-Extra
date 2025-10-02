@@ -1,11 +1,11 @@
-import {cart} from '../../data/cart-class.js';
+import {cart,totalCartQuantity} from '../../data/cart.js';
 import { FindDeliveryOption } from '../../data/deliveryOptionId.js';
 import {products,getProduct} from '../../data/products.js'
 import {formatCurrency} from '../utils/money.js'
 export function renderPaymentSummary () {
   let totalPrice = 0;
   let ShippingHandling = 0;
-  cart.cartItems.forEach((cartItem)=> {
+  cart.forEach((cartItem)=> {
     const product = getProduct(cartItem.productId);
     const deliveryOption = FindDeliveryOption(cartItem.deliveryOptionId);
     totalPrice += product.priceCents * cartItem.quantity;
@@ -25,7 +25,7 @@ export function renderPaymentSummary () {
           </div>
 
           <div class="payment-summary-row">
-            <div>Items (${cart. totalCartQuantity()}):</div>
+            <div>Items (${totalCartQuantity()}):</div>
             <div class="payment-summary-money">$${totalPriceString}</div>
           </div>
 

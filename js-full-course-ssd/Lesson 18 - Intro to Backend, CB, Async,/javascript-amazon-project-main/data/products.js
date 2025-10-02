@@ -13,7 +13,7 @@ class Product {
     this.priceCents=productDetails.priceCents;
   }
   getStartsUrl () {
-    return `./images/ratings/rating-${this.rating.stars * 10}.png`;
+    return `/images/ratings/rating-${this.rating.stars * 10}.png`;
   }
   getPrice () {
     return `$${formatCurrency(this.priceCents)}`
@@ -42,19 +42,7 @@ class Clothing extends Product {
 }
 
 
-class Appliance extends Product {
-  instructionLink;
-  warrantyLink;
-  constructor(productDetails) {
-    super(productDetails);
-    this.instructionLink = productDetails.instructionLink;
-    this.warrantyLink = productDetails.warrantyLink;
-  }
-  extraInfoHTML () {
-    return `<a href = "${this.instructionLink}" >Instructions</a>
-    <a href = "${this.warrantyLink}" >Warranty</a>`;
-  }
-}
+
 
 
 
@@ -165,9 +153,6 @@ export const products = [
       count: 2197
     },
     priceCents: 1899,
-    type: 'appliance',
-    instructionLink: 'images/appliance-instructions.png',
-    warrantyLink: 'images/appliance-warranty.png',
     keywords: [
       "toaster",
       "kitchen",
@@ -805,10 +790,7 @@ export const products = [
   if(productDetails.type === 'clothing') {
     return new Clothing(productDetails);
   }
-  else if(productDetails.type === 'appliance') {
-    return new Appliance(productDetails);
-  }
-    return new Product(productDetails);
+  return new Product(productDetails);
 ;})
 export function getProduct(productId) {
   let matchingItem;

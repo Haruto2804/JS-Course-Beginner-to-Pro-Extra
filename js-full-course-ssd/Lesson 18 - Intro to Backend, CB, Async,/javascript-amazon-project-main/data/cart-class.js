@@ -11,7 +11,7 @@ class Cart {
   this.cartItems = JSON.parse(localStorage.getItem(this.#localStorageKey)) || [];
   };
   saveToLocalStorage () {
-    localStorage.setItem(this.#localStorageKey,JSON.stringify(this.cartItems));
+    localStorage.setItem(this.localStorageKey,JSON.stringify(this.cartItems));
   };
   addToCart (productId) {
     const addToCartElement = document.querySelectorAll('.js-add-to-cart')
@@ -66,10 +66,13 @@ class Cart {
   };
   
   updateCartQuantity () {
-    const checkOutItemTitle = document.querySelector('.js-cart-quantity');
-      if(checkOutItemTitle) { 
-        checkOutItemTitle.innerHTML = `${this.totalCartQuantity()}`
-      }
+      let cartQuantity = 0;
+      this.cartItems.forEach((item)=> {
+      cartQuantity += item.quantity;;
+    })
+      document.querySelector('.js-cart-quantity')
+        .innerHTML = `${cartQuantity}`
+    return cartQuantity;
   };
 
   removeFromCart(productId) {
@@ -93,6 +96,7 @@ class Cart {
 
   displayAddMessage (productId) {
   const addedMessage = document.querySelector(`.added-to-cart-js-${productId}`);
+  console.log(addedMessage)
   let addedMessageTimeoutId;
   addedMessage.classList.add('added-to-cart-js-visible');
   const timeOutId = setTimeout(()=> {
@@ -108,7 +112,17 @@ class Cart {
 
 
 
-export const cart = new Cart ('cart-oop');
+const cart = new Cart ('cart-oop');
+const businessCart = new Cart ('cart-bussines');
+const cartCompany = new Cart ('cart-company');
+
+
+console.log(cart);
+console.log(businessCart);
+console.log(cartCompany);
+
+console.log(businessCart instanceof Cart)
+
 
 
 

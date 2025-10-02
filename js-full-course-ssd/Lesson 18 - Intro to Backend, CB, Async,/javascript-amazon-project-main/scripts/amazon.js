@@ -1,10 +1,6 @@
-import * as utils from '../scripts/utils/money.js'
-import '../data/cart-class.js'
-import {products} from '../data/products.js'
-import '../data/cart-class.js'
-import {cart} from '../data/cart-class.js'
+import * as utils from './utils/money.js'
+import {cart,totalCartQuantity} from '../data/cart.js'
 let productsHTML ='';
-cart.updateCartQuantity();
 products.forEach((product)=> {
   productsHTML += `
         <div class="product-container">
@@ -19,17 +15,18 @@ products.forEach((product)=> {
 
             <div class="product-rating-container">
               <img class="product-rating-stars"
-              src = "${product.getStartsUrl()}">
+                src="./images/ratings/rating-${product.rating.stars * 10}.png">
               <div class="product-rating-count link-primary">
                 ${product.rating.count}
               </div>
             </div>
+
             <div class="product-price">
-            ${product.getPrice()}
+              $${utils.formatCurrency(product.priceCents)} 
             </div>
 
             <div class="product-quantity-container">
-              <select class = "js-select-input-${product.id}">
+              <select class = "js-select-input">
                 <option selected value="1">1</option>
                 <option value="2">2</option>
                 <option value="3">3</option>
@@ -42,10 +39,10 @@ products.forEach((product)=> {
                 <option value="10">10</option>
               </select>
             </div>
-            ${product.extraInfoHTML()}
+
             <div class="product-spacer"></div>
- 
-            <div class="added-to-cart added-to-cart-js added-to-cart-js-${product.id}">
+
+            <div class="added-to-cart">
               <img src="images/icons/checkmark.png">
               Added
             </div>
@@ -57,12 +54,37 @@ products.forEach((product)=> {
           </div>
   `
 })
+//GRID PRODUCT=====================================
 document.querySelector('.js-products-grid').
     innerHTML = productsHTML;
 //GRID PRODUCT=====================================
-  cart.updateCartQuantity();
-  //CART ================================
-  cart.addToCart();
-  //CART ================================
 
-  
+
+
+  //CART ================================
+  document.querySelectorAll('.js-add-to-cart')
+  .forEach((button)=> {
+  button. addEventListener('click',()=> {
+  const productID = button.dataset.productId;
+  let matchingItem;
+  const selectorElement = document.querySelector('js-select-input')
+  cart.forEach((item)=> {
+    if(productID === item.productID) {
+          matchingItem=item;
+    }
+  })
+    if(matchingItem) {
+      matchingItem.quantity+=1;
+      
+    }else {
+      cart.push({
+      productID: productID,
+      quantity: 1
+      })
+    }
+    document.querySelector('.js-cart-quantity')
+      .innerHTML = `5`;
+})
+})
+
+  //CART ================================
