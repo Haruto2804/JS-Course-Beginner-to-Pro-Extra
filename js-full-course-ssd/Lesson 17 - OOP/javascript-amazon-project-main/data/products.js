@@ -53,10 +53,49 @@ class Clothing extends Product {
 
 
 
+/*
+const date = new Date ();
+console.log(date);
+console.log(date.toLocaleTimeString());
+*/
+
+
+/*
+console.log(this)
+const object2 = {
+  a: 2,
+  b: this.a
+}
+*/
+
+/*
+function logThis () {
+  console.log(this);
+}
+logThis();
+logThis.call('codeWithHaruto');
 
 
 
+const object3 = {
+  method: ()=> {
+    console.log(this);
+  }
+}
 
+object3.method();
+function Timer() {
+  this.seconds = 0; // this mượn từ biến seaconds
+
+  setInterval(() => {
+    this.seconds++; // trong arrow function, this mượn bên ngoài arrow function
+    console.log(this.seconds);
+  }, 1000);
+}
+
+new Timer();
+
+*/
 
 export const products = [
   {
