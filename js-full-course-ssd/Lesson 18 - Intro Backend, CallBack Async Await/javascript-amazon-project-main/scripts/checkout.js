@@ -6,6 +6,52 @@ import '../data/backend-practice.js'
 import {loadCart} from '../data/cart-class.js';
 
 
+
+
+
+
+ async function loadPage () {
+
+  await loadProductsFetch()
+  
+  await new Promise ((resolve)=> {
+    loadCart(()=> {
+      resolve('sd');
+    });
+    
+    renderOrderSummary();
+    renderPaymentSummary();
+  })
+
+}
+loadPage();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /*
 new Promise ((resolve)=> {
   console.log('start promise');
@@ -17,12 +63,6 @@ new Promise ((resolve)=> {
   renderOrderSummary();
   renderPaymentSummary();
 })
-
-*/
-
-
-
-
 
 
 
@@ -45,26 +85,27 @@ Promise.all([
 
 
 
-// new Promise ((resolve)=> {
-//   loadProducts(()=> {
-//     resolve();
-//   })
-// }).then (()=> {
-//   return new Promise((resolve)=> {
-//     loadCart(()=> {
-//       resolve();
-//     });
-//   });
-// }).then(()=> {
-//   renderOrderSummary();
-//   renderPaymentSummary();
-// })
+new Promise ((resolve)=> {
+  loadProducts(()=> {
+    resolve();
+  })
+}).then (()=> {
+  return new Promise((resolve)=> {
+    loadCart(()=> {
+      resolve();
+    });
+  });
+}).then(()=> {
+  renderOrderSummary();
+  renderPaymentSummary();
+})
 
 
 
-//  loadProducts(()=> {
-//   loadCart(()=> {
-//      renderOrderSummary();
-//      renderPaymentSummary();
-//   });
-//  });
+ loadProducts(()=> {
+  loadCart(()=> {
+     renderOrderSummary();
+     renderPaymentSummary();
+  });
+ });
+*/
