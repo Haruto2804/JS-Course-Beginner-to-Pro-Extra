@@ -10,27 +10,32 @@ import {loadCart} from '../data/cart-class.js';
 
 
 
- async function loadPage () {
 
-  await loadProductsFetch()
-  
-  await new Promise ((resolve)=> {
+
+
+
+async function loadPage () {
+  try {
+    //throw 'error1';
+    await loadProductsFetch()
+  const value =  await new Promise ((resolve,reject)=> {
+    //throw 'error2'
     loadCart(()=> {
-      resolve('sd');
+      //  reject ('error 3');
+      resolve('');
     });
     
     renderOrderSummary();
     renderPaymentSummary();
-  })
+  });
+  } catch (error) {
+    console.log('Unexpected error. Please try again later.',error);
+  }
+  
 
 }
+
 loadPage();
-
-
-
-
-
-
 
 
 
