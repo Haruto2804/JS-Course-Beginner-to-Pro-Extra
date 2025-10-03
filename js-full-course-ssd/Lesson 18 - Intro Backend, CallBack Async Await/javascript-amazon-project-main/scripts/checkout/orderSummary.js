@@ -146,8 +146,9 @@ function updateTotalItem (productId) {
   })
 }
 
-document.querySelector('.order-summary')
-  .addEventListener('click',(e)=> {
+const orderSummaryElement = document.querySelector('.order-summary');
+if(orderSummaryElement) {
+    orderSummaryElement.addEventListener('click',(e)=> {
     if(e.target.matches('.js-delete-product')) {
       console.log('Ban dang an vao nut xóa')
       handleDeleteBtn(e);
@@ -165,6 +166,8 @@ document.querySelector('.order-summary')
       handleDeliveryOptionId(e);
     }
   })
+}
+
 
 
 

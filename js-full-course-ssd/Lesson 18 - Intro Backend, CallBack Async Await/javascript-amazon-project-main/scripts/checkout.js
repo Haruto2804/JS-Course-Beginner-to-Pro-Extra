@@ -24,9 +24,8 @@ async function loadPage () {
       //  reject ('error 3');
       resolve('');
     });
-    
-    renderOrderSummary();
     renderPaymentSummary();
+    renderOrderSummary();
   });
   } catch (error) {
     console.log('Unexpected error. Please try again later.',error);

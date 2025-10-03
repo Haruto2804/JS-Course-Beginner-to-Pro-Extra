@@ -1,10 +1,15 @@
 import * as utils from '../scripts/utils/money.js'
 import '../data/cart-class.js'
-import {loadProducts, products} from '../data/products.js'
+import {loadProducts, loadProductsFetch, products} from '../data/products.js'
 import '../data/cart-class.js'
 import {cart, loadCart} from '../data/cart-class.js'
 
-loadProducts(renderProductGrid);
+async function initPage () {
+  await loadProductsFetch();
+  console.log(products);
+  renderProductGrid();
+}
+ 
 function renderProductGrid () {
 let productsHTML ='';
 cart.updateCartQuantity();
@@ -68,5 +73,6 @@ document.querySelector('.js-products-grid').
   cart.addToCart();
   //CART ================================
 
-  
 }
+
+initPage();
