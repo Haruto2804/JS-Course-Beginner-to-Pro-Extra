@@ -4,7 +4,6 @@ import {deliveryOptions, FindDeliveryOption} from '../../data/deliveryOptionId.j
 import dayjs from 'https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js'
 import {renderPaymentSummary} from './paymentSummary.js'
 import {cart} from '../../data/cart-class.js';
-renderOrderSummary();
 export function renderOrderSummary () {
   let html = '';
   cart.cartItems.forEach((cartItem)=> {
