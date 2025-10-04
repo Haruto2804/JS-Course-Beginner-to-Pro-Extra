@@ -1,8 +1,10 @@
-import {cart} from '../../data/cart-class.js';
+import {cart, loadCartFetch} from '../../data/cart-class.js';
 import { FindDeliveryOption } from '../../data/deliveryOptionId.js';
 import {products,getProduct} from '../../data/products.js'
 import {formatCurrency} from '../utils/money.js'
 import { addOrder } from '../../data/orders.js';
+import { renderOrderSummary } from './orderSummary.js';
+
 export function renderPaymentSummary () {
   let totalPrice = 0;
   let ShippingHandling = 0;
@@ -70,12 +72,59 @@ export function renderPaymentSummary () {
           })
         });
         const order = await response.json(); // wait finished
-        addOrder(order);
+        const orderWithDeliveryOption = {
+          ...order, // ...: spread opeator: copy toàn bộ thuộc tính từ order trả về từ sever POST/orders
+          products: cart.cartItems.map(item=> ({
+            productId: item.productId,
+            quantity: item.quantity,
+            deliveryOptionId: item.deliveryOptionId
+          }))
+        }
+
+
+    
+        addOrder(orderWithDeliveryOption);
         }catch (error) {
           console.log('Unexpected error',error);
         }
-        window.location.href = 'orders.html'
+
+        cart.cartItems = [];
+        cart.saveToLocalStorage();
+
+        //cập nhật lại check out item về 0
+        document.querySelector('.js-checkout-item')
+          .textContent = '0';
+          renderOrderSummary();
+          renderPaymentSummary();
+          closePlaceOrderBtn();
+          window.location.href = 'orders.html'
+        
       });
+}
 
 
+
+export function renderEmptyCart() {
+  const emptyCartElement = document.querySelector('.js-cart-summary')
+    .innerHTML = `
+    <p class = "cart-empty-text">Your cart is empty</p>
+    <a href = "amazon.html"><button class = "view-products">View products</button></a>
+    
+    `
+}
+
+
+
+export function closePlaceOrderBtn () {
+    const placeOrderBtnElement = document.querySelector('.js-place-order');
+    placeOrderBtnElement.style.opacity = '0.5';
+    placeOrderBtnElement.style.cursor = 'none';
+    placeOrderBtnElement.style.pointerEvents  = 'none';
+}
+
+export function openPlaceOrderBtn () {
+  const placeOrderBtnElement = document.querySelector('.js-place-order');
+  placeOrderBtnElement.style.opacity = '1';
+  placeOrderBtnElement.style.cursor = 'auto';
+  placeOrderBtnElement.style.pointerEvents  = 'pointer';
 }

@@ -1,6 +1,7 @@
 import { loadProducts, products } from "./products.js";
 import { deliveryOptions } from "./deliveryOptionId.js";
 import { renderOrderSummary } from "../scripts/checkout/orderSummary.js";
+import {openPlaceOrderBtn} from '../scripts/checkout/paymentSummary.js'
 class Cart {
   cartItems;
   #localStorageKey;
@@ -43,6 +44,9 @@ class Cart {
         this.displayAddMessage(productId);
       })
     })
+    if(this.cartItems) {
+      openPlaceOrderBtn();
+    }
   };
   addToCart1(productId) {
   let matchingItem;
@@ -104,28 +108,38 @@ class Cart {
   },2000)
   addedMessageTimeoutId = timeOutId;
   };
-
+  getCartItem (productId) {
+    return this.cartItems.find(cartItem => cartItem.productId === productId);
+}
 }
 
 
 
-export const cart = new Cart ('cart-oop');
+export const cart = new Cart ('cart-class');
 
 
 
-
-
-
-
-export function loadCart(fun) {
-  const xhr = new XMLHttpRequest ();
-  xhr.addEventListener('load',()=> { 
-    console.log(xhr.response);
-    fun();
-  })
-  xhr.open('GET', 'https://supersimplebackend.dev/cart');
-  xhr.send()
+export async function loadCartFetch () {
+  const response = await fetch('https://supersimplebackend.dev/cart');
+  const text = await response.text();
+  console.log(text);
 }
+
+loadCartFetch();
+
+
+
+
+
+// export function loadCart(fun) {
+//   const xhr = new XMLHttpRequest ();
+//   xhr.addEventListener('load',()=> { 
+//     console.log(xhr.response);
+//     fun();
+//   })
+//   xhr.open('GET', 'https://supersimplebackend.dev/cart');
+//   xhr.send()
+// }
 
 
 

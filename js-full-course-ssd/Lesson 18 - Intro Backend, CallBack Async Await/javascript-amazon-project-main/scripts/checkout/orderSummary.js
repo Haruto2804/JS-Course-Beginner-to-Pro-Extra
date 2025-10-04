@@ -2,8 +2,9 @@ import {products} from '../../data/products.js';
 import * as utils from '../utils/money.js'
 import {deliveryOptions, FindDeliveryOption} from '../../data/deliveryOptionId.js'
 import dayjs from 'https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js'
-import {renderPaymentSummary} from './paymentSummary.js'
+import {renderPaymentSummary,closePlaceOrderBtn,renderEmptyCart} from './paymentSummary.js'
 import {cart} from '../../data/cart-class.js';
+import { loadPage } from '../checkout.js';
 export function renderOrderSummary () {
   let html = '';
   cart.cartItems.forEach((cartItem)=> {
@@ -152,6 +153,8 @@ if(orderSummaryElement) {
     if(e.target.matches('.js-delete-product')) {
       console.log('Ban dang an vao nut xóa')
       handleDeleteBtn(e);
+      loadPage();
+
     }
     if(e.target.matches('.updateBtn')) {
             console.log('Ban dang an vao nut update')
@@ -249,7 +252,7 @@ function getCaculateDeliveryDay (deliveryOption) {
   const today = dayjs();
   const waitDays = skipWeekends(deliveryOption.deliveryDays);
   const deliveryDate = today.add(waitDays,'days');
-  return deliveryDate.format('dddd MMMM D');
+  return deliveryDate.format('dddd, MMMM D');
   }
 
 function skipWeekends (deliveryDays) {

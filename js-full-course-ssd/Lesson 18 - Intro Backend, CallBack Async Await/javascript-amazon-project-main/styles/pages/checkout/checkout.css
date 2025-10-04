@@ -218,3 +218,21 @@
 .hidden {
   display: none;
 }
+
+.cart-empty-text {
+  font-size: 20px;
+  margin-bottom: 15px;
+}
+.view-products {
+  color: black;
+  border: none;
+  background-color: rgb(252, 210, 0);
+  padding: 10px 20px;
+  border-radius: 10px;
+}
+.view-products:hover {
+  opacity: 0.8;
+}
+.view-products:active {
+  opacity: 0.6;
+}

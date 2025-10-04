@@ -2,11 +2,10 @@ import * as utils from '../scripts/utils/money.js'
 import '../data/cart-class.js'
 import {loadProducts, loadProductsFetch, products} from '../data/products.js'
 import '../data/cart-class.js'
-import {cart, loadCart} from '../data/cart-class.js'
+import {cart} from '../data/cart-class.js'
 
 async function initPage () {
   await loadProductsFetch();
-  console.log(products);
   renderProductGrid();
 }
  

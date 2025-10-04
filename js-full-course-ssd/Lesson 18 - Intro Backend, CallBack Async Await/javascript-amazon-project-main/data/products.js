@@ -885,15 +885,7 @@ export function loadProducts(fun) {
 // ;})
 
 
-export function getProduct(productId) {
-  let matchingItem;
-  products.forEach((product)=> {
-    if(productId === product.id) {
-      matchingItem = product;
-    }
-  }) 
-  if(matchingItem) {
-    return matchingItem;
-  }
-}
 
+export function getProduct (productId) {
+  return products.find((product)=> productId === product.id);
+}

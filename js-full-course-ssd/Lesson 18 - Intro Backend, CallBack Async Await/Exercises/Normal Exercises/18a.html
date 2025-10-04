@@ -1,0 +1,21 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>18a</title>
+</head>
+<body>
+  <script>
+    const xhr = new XMLHttpRequest ();
+
+    xhr.addEventListener('load',()=> {
+      console.log(xhr.response); // RECEIVE RESPONSE REQUEST TO BACKEND
+    })
+
+    //SEND REQUEST TO BACKEND
+    xhr.open('GET','https://supersimplebackend.dev/greeting');
+    xhr.send();
+
+  </script>
+</body>
+</html>
